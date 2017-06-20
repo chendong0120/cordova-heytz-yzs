@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-heytz-yzs" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>cordova-heytz-yzs</name>
+    <js-module name="HeytzYzs" src="www/HeytzYzs.js">
+        <clobbers target="cordova.plugins.HeytzYzs"/>
+    </js-module>
+    <preference name="APP_KEY"/>
+    <preference name="APP_SECRET"/>
+
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="cordova-heytz-yzs">
+                <param name="ios-package" value="HeytzYzs"/>
+            </feature>
+            <preference name="yzsappkey" value="$APP_KEY"/>
+            <preference name="yzsappsecret" value="$APP_SECRET"/>
+        </config-file>
+        <preference name="YZS_USAGE_MICROPHONE" default=" "/>
+        <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
+            <string>$YZS_USAGE_MICROPHONE</string>
+        </config-file>
+        <preference name="YZS_USAGE_LOCATION" default=" "/>
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+            <string>$YZS_USAGE_LOCATION</string>
+        </config-file>
+
+        <header-file src="src/ios/HeytzYzs.h"/>
+        <source-file src="src/ios/HeytzYzs.m"/>
+
+        <!--<header-file src="libs/ios/USCConstant.h"/>-->
+        <!--<header-file src="libs/ios/USCIAudioSource.h"/>-->
+        <!--<header-file src="libs/ios/USCIAudioSource.m"/>-->
+        <!--<header-file src="libs/ios/USCRecognizer.h"/>-->
+        <!--<header-file src="libs/ios/USCSpeechConstant.h"/>-->
+        <header-file src="libs/ios/USCSpeechResult.h"/>
+        <header-file src="libs/ios/USCSpeechSynthesizer.h"/>
+        <header-file src="libs/ios/USCSpeechUnderstander.h"/>
+        <!--<header-file src="libs/ios/USCVoiceprintParams.h"/>-->
+        <!--<header-file src="libs/ios/USCVoiceprintRecognizer.h"/>-->
+        <!--<header-file src="libs/ios/USCVoiceprintResult.h"/>-->
+        <source-file framework="true" src="libusc.a"/>
+
+        <!--Frameworks库-->
+        <framework src="CoreLocation.framework"/>
+        <framework src="CoreTelephony.framework"/>
+        <framework src="AVFoundation.framework"/>
+        <framework src="AudioToolbox.framework"/>
+        <framework src="SystemConfiguration.framework"/>
+
+    </platform>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="cordova-heytz-yzs">
+                <param name="android-package" value="com.heytz.yzs.HeytzYzs"/>
+            </feature>
+            <preference name="yzsappkey" value="$APP_KEY"/>
+            <preference name="yzsappsecret" value="$APP_SECRET"/>
+        </config-file>
+
+        <lib-file src="libs/android/usc.jar"/>
+        <source-file src="libs/android/armeabi/libuscasr.so" target-dir="libs/armeabi/"/>
+        <source-file src="libs/android/armeabi-v7a/libuscasr.so" target-dir="libs/armeabi-v7a/"/>
+        <source-file src="libs/android/mips/libuscasr.so" target-dir="libs/mips/"/>
+        <source-file src="libs/android/x86/libuscasr.so" target-dir="libs/x86/"/>
+        <!--申请权限-->
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+            <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+            <uses-permission android:name="android.permission.READ_CONTACTS"/>
+            <uses-permission android:name="android.permission.WAKE_LOCK"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+        </config-file>
+        <source-file src="src/android/HeytzYzs.java" target-dir="src/com/heytz/yzs/HeytzYzs"/>
+    </platform>
+</plugin>
