@@ -67,13 +67,18 @@
         <source-file src="libs/android/x86/libuscasr.so" target-dir="libs/x86/"/>
         <!--申请权限-->
         <config-file parent="/*" target="AndroidManifest.xml">
+            <!--允许应用使用麦克风-->
             <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+            <!--获取当前网络状态，优化录音参数及网络参数-->
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+            <!--允许应用联网,发送语音数据至服务器,获得识别结果-->
             <uses-permission android:name="android.permission.INTERNET"/>
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <!--获取当前 wifi 状态， 优化录音参数及网络参数-->
             <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
             <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+            <!--获取用户手机的 IMEI，用来唯一标示用户-->
             <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
             <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
             <uses-permission android:name="android.permission.READ_CONTACTS"/>
