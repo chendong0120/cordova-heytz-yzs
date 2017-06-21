@@ -52,12 +52,12 @@
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="HeytzYzs">
-                <param name="android-package" value="com.heytz.heytzYzs.HeytzYzs"/>
+                <param name="android-package" value="com.heytz.yzs.HeytzYzs"/>
             </feature>
             <preference name="yzsappkey" value="$APP_KEY"/>
             <preference name="yzsappsecret" value="$APP_SECRET"/>
         </config-file>
-        <source-file src="src/android/HeytzYzs.java" target-dir="src/com/heytz/heytzYzs/"/>
+        <source-file src="src/android/HeytzYzs.java" target-dir="src/com/heytz/yzs"/>
 
         <lib-file src="libs/android/usc.jar"/>
         <!--<source-file src="libs/android/usc.jar" target-dir="libs/"/>-->
