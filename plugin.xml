@@ -10,7 +10,7 @@
 
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
-            <feature name="cordova-heytz-yzs">
+            <feature name="HeytzYzs">
                 <param name="ios-package" value="HeytzYzs"/>
             </feature>
             <preference name="yzsappkey" value="$APP_KEY"/>
@@ -39,7 +39,7 @@
         <!--<header-file src="libs/ios/USCVoiceprintParams.h"/>-->
         <!--<header-file src="libs/ios/USCVoiceprintRecognizer.h"/>-->
         <!--<header-file src="libs/ios/USCVoiceprintResult.h"/>-->
-        <source-file framework="true" src="libusc.a"/>
+        <source-file framework="true" src="libs/ios/libusc.a"/>
 
         <!--Frameworks库-->
         <framework src="CoreLocation.framework"/>
@@ -51,14 +51,16 @@
     </platform>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="cordova-heytz-yzs">
-                <param name="android-package" value="com.heytz.yzs.HeytzYzs"/>
+            <feature name="HeytzYzs">
+                <param name="android-package" value="com.heytz.heytzYzs.HeytzYzs"/>
             </feature>
             <preference name="yzsappkey" value="$APP_KEY"/>
             <preference name="yzsappsecret" value="$APP_SECRET"/>
         </config-file>
+        <source-file src="src/android/HeytzYzs.java" target-dir="src/com/heytz/heytzYzs/"/>
 
         <lib-file src="libs/android/usc.jar"/>
+        <!--<source-file src="libs/android/usc.jar" target-dir="libs/"/>-->
         <source-file src="libs/android/armeabi/libuscasr.so" target-dir="libs/armeabi/"/>
         <source-file src="libs/android/armeabi-v7a/libuscasr.so" target-dir="libs/armeabi-v7a/"/>
         <source-file src="libs/android/mips/libuscasr.so" target-dir="libs/mips/"/>
@@ -78,6 +80,5 @@
             <uses-permission android:name="android.permission.WAKE_LOCK"/>
             <uses-permission android:name="android.permission.VIBRATE"/>
         </config-file>
-        <source-file src="src/android/HeytzYzs.java" target-dir="src/com/heytz/yzs/HeytzYzs"/>
     </platform>
 </plugin>

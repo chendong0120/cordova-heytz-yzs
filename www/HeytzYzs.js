@@ -62,5 +62,4 @@ if (!window.plugins) {
 if (!window.plugins.HeytzYzs) {
   window.plugins.HeytzYzs = new HeytzYzs()
 }
-// cordova.fireDocumentEvent('SmartBand.HeytzICallback', window.plugins.SmartBand.HeytzICallback);
 module.exports = new HeytzYzs();

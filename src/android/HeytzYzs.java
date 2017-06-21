@@ -1,15 +1,16 @@
-package com.heytz.yzs;
+package com.heytz.heytzYzs;
 
+import android.content.Context;
 import android.util.Log;
 import com.unisound.client.SpeechConstants;
 import com.unisound.client.SpeechUnderstander;
 import com.unisound.client.SpeechUnderstanderListener;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CallbackContext;
+import org.apache.cordova.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * This class echoes a string called from JavaScript.
@@ -37,11 +38,11 @@ public class HeytzYzs extends CordovaPlugin {
             "song", "movietv", "medical"};
     private static String APP_ID;
     private static String APP_SECRET;
-    private AsrStatus statue = AsrStatus.idle;
+    private static AsrStatus statue = AsrStatus.idle;
 
     private SpeechUnderstander mUnderstander;
     private CallbackContext callbackContextListener;
-    private static final SpeechUnderstanderListener speechUnderstanderListener = new SpeechUnderstanderListener() {
+    private final SpeechUnderstanderListener speechUnderstanderListener = new SpeechUnderstanderListener() {
 
         @Override
         public void onResult(int type, String jsonResult) {
@@ -65,13 +66,8 @@ public class HeytzYzs extends CordovaPlugin {
                     break;
             }
             String format = "cordova.plugins.HeytzYzs.speechUnderstanderResult(%d,%s);";
-            final String js = String.format(format, type, timeMs);
-            cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    cordova.webView.loadUrl("javascript:" + js);
-                }
-            });
+            final String js = String.format(format, type, jsonResult);
+            loadUrl(js);
         }
 
         @Override
@@ -92,39 +88,29 @@ public class HeytzYzs extends CordovaPlugin {
                     break;
                 case SpeechConstants.ASR_EVENT_RECORDING_START:
                     //录音设备打开，开始识别，用户可以开始说话
-                    statue = AsrStatus.recording;
+                    statue =  AsrStatus.recording;
                     break;
                 case SpeechConstants.ASR_EVENT_RECORDING_STOP:
                     // 停止录音，请等待识别结果回调
                     log_v("onRecordingStop");
-                    statue = AsrStatus.recognizing;
+                    statue =  AsrStatus.recognizing;
                     break;
                 case SpeechConstants.ASR_EVENT_USERDATA_UPLOADED:
                     log_v("onUploadUserData");
                 case SpeechConstants.ASR_EVENT_NET_END:
-                    statue = AsrStatus.idle;
+                    statue =  AsrStatus.idle;
                     break;
             }
             String format = "cordova.plugins.HeytzYzs.speechUnderstanderEvent(%d,%s);";
             final String js = String.format(format, type, timeMs);
-            cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    cordova.webView.loadUrl("javascript:" + js);
-                }
-            });
+            loadUrl(js);
         }
 
         @Override
         public void onError(int type, final String errorMSG) {
             String format = "cordova.plugins.HeytzYzs.speechUnderstanderError(%d,%s);";
             final String js = String.format(format, type, errorMSG);
-            cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    cordova.webView.loadUrl("javascript:" + js);
-                }
-            });
+            loadUrl(js);
         }
     };
 
@@ -133,7 +119,7 @@ public class HeytzYzs extends CordovaPlugin {
      */
     private void initRecognizer() {
         // 创建识别对象，appKey通过 http://dev.hivoice.cn/ 网站申请
-        mUnderstander = new SpeechUnderstander(this, APP_ID, APP_SECRET);
+        mUnderstander = new SpeechUnderstander(cordova.getActivity().getApplicationContext(), APP_ID, APP_SECRET);
         //设置无语义结果
         mUnderstander.setOption(SpeechConstants.NLU_ENABLE, false);
         mUnderstander.setListener(speechUnderstanderListener);
@@ -154,15 +140,15 @@ public class HeytzYzs extends CordovaPlugin {
             callbackContext.success();
             return true;
         } else if (action.equals(START_RECORD)) {
-            if (AsrStatus.idle) {
-                this.startRecord();
+            if (statue== AsrStatus.idle) {
+                this.startRecord(callbackContext);
             } else {
                 callbackContext.error("running");
             }
             return true;
         } else if (action.equals(STOP_RECORD)) {
             if (stopRecord()) {
-                statue = AsrStatus.idle;
+                statue =  AsrStatus.idle;
                 callbackContext.success();
             } else {
                 callbackContext.error("not start");
@@ -178,8 +164,8 @@ public class HeytzYzs extends CordovaPlugin {
     /**
      * 开始录音
      */
-    public void startRecord(CallbackContext callbackContext) {
-        if (mUnderstander) {
+    void startRecord(CallbackContext callbackContext) {
+        if (mUnderstander != null) {
             // 修改识别领域
             mUnderstander.setOption(SpeechConstants.ASR_DOMAIN, arrayDomain[0]);
             mUnderstander.start();
@@ -192,11 +178,11 @@ public class HeytzYzs extends CordovaPlugin {
     /**
      * 停止录音
      */
-    public boolean stopRecord() {
-        if (statue == AsrStatus.recording) {
+    boolean stopRecord() {
+        if (statue ==  AsrStatus.recording) {
             mUnderstander.stop();
             return true;
-        } else if (statue == AsrStatus.recognizing) {
+        } else if (statue ==  AsrStatus.recognizing) {
             mUnderstander.cancel();
             return true;
         } else {
@@ -204,10 +190,19 @@ public class HeytzYzs extends CordovaPlugin {
         }
     }
 
-    private void sendCallback(PluginResult pluginResult) {
-        if (callbackContextListener) {
+    void sendCallback(PluginResult pluginResult) {
+        if (callbackContextListener != null) {
             callbackContextListener.sendPluginResult(pluginResult);
         }
+    }
+
+    void loadUrl(final String js) {
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl("javascript:" + js);
+            }
+        });
     }
 
     /**
@@ -215,7 +210,7 @@ public class HeytzYzs extends CordovaPlugin {
      *
      * @param msg
      */
-    private void log_v(String msg) {
+    void log_v(String msg) {
         Log.v("demo", msg);
     }
 
