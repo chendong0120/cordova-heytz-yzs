@@ -14,6 +14,13 @@ var HeytzYzs = function () {
  * @param {String} data.jsonResult.net_asr.[0].recognition_result
  * @param {String} data.jsonResult.net_asr.[0].result_type partial 部分 full 全部
  * @param {String} data.jsonResult.net_asr.[0].sessionId
+ *
+ * IOS
+ * {"asr_recongize":"今天天气怎么样啊？","nluProcessTime":"47","rc":5,"text":"今天天气怎么样啊",
+ * "service":"cn.yunzhisheng.error","code":"ANSWER","general":{"type":"T","text":"对不起，暂时还不支持该功能，我会努力变得更好的。"},
+ * "history":"cn.yunzhisheng.error","responseId":"ccfe105162e34d94a993e5614196db36"}
+ * Android
+ *
  */
 HeytzYzs.prototype.onSpeechUnderstanderResult = {};
 /**
@@ -43,16 +50,8 @@ HeytzYzs.prototype.init = function (success, error) {
 };
 /**
  * 语音识别结果返回接口
- * 通常接口多次返回结果，保留识别结果组成完整的识别内容。
+ * 返回最终识别结果
  * @param {function} success(data)
- * @param {Object} data
- * @param {Array}  data.net_asr
- * @param {Object} data.net_asr.[0]
- * @param {String} data.net_asr.[0].engine_mode
- * @param {boolean}data.net_asr.[0].last_result
- * @param {String} data.net_asr.[0].recognition_result
- * @param {String} data.net_asr.[0].result_type partial 部分 full 全部
- * @param {String} data.net_asr.[0].sessionId
  * @param error
  */
 HeytzYzs.prototype.speechUnderstanderListener = function (success, error) {

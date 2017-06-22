@@ -52,10 +52,23 @@ public class HeytzYzs extends CordovaPlugin {
                     // 在线识别结果，通常onResult接口多次返回结果，保留识别结果组成完整的识别内容。
                     log_v("onRecognizerResult");
                     // 通常onResult接口多次返回结果，保留识别结果组成完整的识别内容。
-                    JSONObject json = new JSONObject(jsonResult);
-                    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, json);
-                    pluginResult.setKeepCallback(true);
-                    sendCallback(pluginResult);
+                    if (jsonResult.contains("net_asr")) {
+                        try {
+                            JSONObject json = new JSONObject(jsonResult);
+                            JSONArray jsonArray = json.getJSONArray("net_asr");
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String status = jsonObject.getString("result_type");
+                            if (status.equals("full")) {
+                                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, (String)jsonObject.get("recognition_result"));
+                                pluginResult.setKeepCallback(true);
+                                if (callbackContextListener != null) {
+                                    callbackContextListener.sendPluginResult(pluginResult);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -185,13 +198,6 @@ public class HeytzYzs extends CordovaPlugin {
             return false;
         }
     }
-
-    void sendCallback(PluginResult pluginResult) {
-        if (callbackContextListener != null) {
-            callbackContextListener.sendPluginResult(pluginResult);
-        }
-    }
-
     void loadUrl(final String js) {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
