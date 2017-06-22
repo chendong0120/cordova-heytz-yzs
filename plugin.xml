@@ -28,9 +28,14 @@
         <header-file src="src/ios/HeytzYzs.h"/>
         <source-file src="src/ios/HeytzYzs.mm"/>
 
+        <header-file src="libs/ios/USCPlayThread.h" target-dir="AudioSource"/>
+        <source-file src="libs/ios/USCPlayThread.mm" target-dir="AudioSource"/>
+        <header-file src="libs/ios/USCRecorder.h" target-dir="AudioSource"/>
+        <source-file src="libs/ios/USCRecorder.mm" target-dir="AudioSource"/>
+
         <header-file src="libs/ios/USCConstant.h"/>
         <header-file src="libs/ios/USCIAudioSource.h"/>
-        <header-file src="libs/ios/USCIAudioSource.m"/>
+        <source-file src="libs/ios/USCIAudioSource.m"/>
         <header-file src="libs/ios/USCRecognizer.h"/>
         <!--常量表-->
         <header-file src="libs/ios/USCSpeechConstant.h"/>
