@@ -52,16 +52,10 @@ public class HeytzYzs extends CordovaPlugin {
                     // 在线识别结果，通常onResult接口多次返回结果，保留识别结果组成完整的识别内容。
                     log_v("onRecognizerResult");
                     // 通常onResult接口多次返回结果，保留识别结果组成完整的识别内容。
-                    if (jsonResult.contains("net_asr")) {
-                        try {
-                            JSONObject json = new JSONObject(jsonResult);
-                            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, json);
-                            pluginResult.setKeepCallback(true);
-                            sendCallback(pluginResult);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    JSONObject json = new JSONObject(jsonResult);
+                    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, json);
+                    pluginResult.setKeepCallback(true);
+                    sendCallback(pluginResult);
                     break;
                 default:
                     break;
