@@ -122,6 +122,7 @@
             NSString *part = [resObj objectForKey:@"asr_recongize"];
             NSLog(@"mstr=%@",part);
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:part];
+             [pluginResult setKeepCallbackAsBool:true];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:_ListenerCallbackId];
         }
     }
