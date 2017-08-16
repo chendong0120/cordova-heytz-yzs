@@ -1,6 +1,8 @@
 package com.heytz.yzs;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.unisound.client.SpeechConstants;
@@ -43,6 +45,11 @@ public class HeytzYzs extends CordovaPlugin {
     private static AsrStatus statue = AsrStatus.idle;
     private SpeechUnderstander mUnderstander;
     private CallbackContext callbackContextListener;
+    private static final String RECORD_AUDIO = Manifest.permission.RECORD_AUDIO;
+    private static final int REQUEST_RECORD_AUDIO = 2;
+    private static final int PERMISSION_DENIED_ERROR = 20;
+    private CallbackContext permissionCallback;
+
     SpeechUnderstanderListener speechUnderstanderListener = new SpeechUnderstanderListener() {
 
         @Override
@@ -59,7 +66,8 @@ public class HeytzYzs extends CordovaPlugin {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String status = jsonObject.getString("result_type");
                             if (status.equals("full")) {
-                                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, (String)jsonObject.get("recognition_result"));
+                                stopRecord();
+                                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, (String) jsonObject.get("recognition_result"));
                                 pluginResult.setKeepCallback(true);
                                 if (callbackContextListener != null) {
                                     callbackContextListener.sendPluginResult(pluginResult);
@@ -149,11 +157,12 @@ public class HeytzYzs extends CordovaPlugin {
             callbackContext.success();
             return true;
         } else if (action.equals(START_RECORD)) {
-            if (statue == AsrStatus.idle) {
+            stopRecord();
+//            if (statue == AsrStatus.idle) {
                 this.startRecord(callbackContext);
-            } else {
-                callbackContext.error("running");
-            }
+//            } else {
+//                callbackContext.error("running");
+//            }
             return true;
         } else if (action.equals(STOP_RECORD)) {
             if (stopRecord()) {
@@ -174,6 +183,13 @@ public class HeytzYzs extends CordovaPlugin {
      * 开始录音
      */
     void startRecord(CallbackContext callbackContext) {
+        if (!PermissionHelper.hasPermission(this, RECORD_AUDIO)) {
+            // save info so we can call this method again after permissions are granted
+            permissionCallback = callbackContext;
+            PermissionHelper.requestPermission(this, REQUEST_RECORD_AUDIO, RECORD_AUDIO);
+            return;
+        }
+
         if (mUnderstander != null) {
             // 修改识别领域
             mUnderstander.setOption(SpeechConstants.ASR_DOMAIN, arrayDomain[0]);
@@ -198,6 +214,7 @@ public class HeytzYzs extends CordovaPlugin {
             return false;
         }
     }
+
     void loadUrl(final String js) {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -214,6 +231,27 @@ public class HeytzYzs extends CordovaPlugin {
      */
     void log_v(String msg) {
         Log.v("demo", msg);
+    }
+
+
+    /* @Override */
+    public void onRequestPermissionResult(int requestCode, String[] permissions,
+                                          int[] grantResults) /* throws JSONException */ {
+        for (int result : grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                LOG.d(TAG, "User *rejected* Coarse Location Access");
+                this.permissionCallback.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, PERMISSION_DENIED_ERROR));
+                return;
+            }
+        }
+
+        switch (requestCode) {
+            case REQUEST_RECORD_AUDIO:
+                LOG.d(TAG, "User granted Coarse Location Access");
+                startRecord(permissionCallback);
+                this.permissionCallback = null;
+                break;
+        }
     }
 
 }

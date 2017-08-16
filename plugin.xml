@@ -7,6 +7,7 @@
     </js-module>
     <preference name="APP_KEY"/>
     <preference name="APP_SECRET"/>
+    <dependency id="cordova-plugin-compat" version="^1.0.0" />
 
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
