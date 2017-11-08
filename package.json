@@ -1,0 +1,28 @@
+{
+  "name": "cordova-heytz-yzs",
+  "version": "0.0.1",
+  "description": "yzs",
+  "cordova": {
+    "id": "cordova-heytz-yzs",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chendong0120/cordova-heytz-yzs.git"
+  },
+  "keywords": [
+    "YZS",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "author": "",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/chendong0120/cordova-heytz-yzs/issues"
+  },
+  "homepage": "https://github.com/chendong0120/cordova-heytz-yzs#readme"
+}

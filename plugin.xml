@@ -2,12 +2,16 @@
 <plugin id="cordova-heytz-yzs" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android">
     <name>cordova-heytz-yzs</name>
+    <description>yzs</description>
+    <author>yzs</author>
+    <keywords>YZS</keywords>
+    <license>MIT License</license>
     <js-module name="HeytzYzs" src="www/HeytzYzs.js">
         <clobbers target="cordova.plugins.HeytzYzs"/>
     </js-module>
     <preference name="APP_KEY"/>
     <preference name="APP_SECRET"/>
-    <dependency id="cordova-plugin-compat" version="^1.0.0" />
+    <dependency id="cordova-plugin-compat" version="^1.0.0"/>
 
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
