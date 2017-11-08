@@ -19,7 +19,7 @@
     "cordova-ios",
     "cordova-android"
   ],
-  "author": "",
+  "author": "kevinchen",
   "license": "MIT License",
   "bugs": {
     "url": "https://github.com/chendong0120/cordova-heytz-yzs/issues"
