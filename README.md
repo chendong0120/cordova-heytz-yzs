@@ -4,7 +4,7 @@
     
 ##install
     
-    cordova plugin add https://github.com/chendong0120/cordova-heytz-yzs.git --variable APP_KEY=APP_KEY APP_SECRET=APP_SECRET NSMicrophoneUsageDescription=使用麦克风 NSLocationAlwaysUsageDescription=访问位置
+    cordova plugin add https://github.com/chendong0120/cordova-heytz-yzs.git --variable APP_KEY=APP_KEY --variable APP_SECRET=APP_SECRET --variable  NSMicrophoneUsageDescription=使用麦克风 --variable NSLocationAlwaysUsageDescription=访问位置
 
 
 ##接口
