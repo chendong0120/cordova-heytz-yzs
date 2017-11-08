@@ -1,6 +1,13 @@
 # cordova-heytz-yzs
 云知声cordovaPlugin
 
+    
+##install
+    
+    cordova plugin add https://github.com/chendong0120/cordova-heytz-yzs.git --variable APP_KEY=APP_KEY APP_SECRET=APP_SECRET NSMicrophoneUsageDescription=使用麦克风 NSLocationAlwaysUsageDescription=访问位置
+
+
+##接口
 
     cordova.plugins.HeytzYzs.init(callback, errorCallback);
     cordova.plugins.HeytzYzs.speechUnderstanderListener(callback, errorCallback);
